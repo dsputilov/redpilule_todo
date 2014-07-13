@@ -1,0 +1,46 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+	<META HTTP-EQUIV="Expires" CONTENT="-1">
+
+	<script src='../core/bind.js'></script>
+	<script src='../core/class.js'></script>
+	<script src='../core/core.js'></script>
+	<script src='../core/redpilule.js'></script>
+	<script src='../core/component.js'></script>
+	<script src='../core/storage.js'></script>
+	<script src='../plugins/config.js'></script>
+
+	<script>
+		$.Router
+			.register('todoApp', {
+				controllerName:	'todoApp',
+				loadScript:		'/todo/todo.js',
+				loadTemplate:	'/todo/todo.html',
+				loadCss:		'/todo/todo.css'
+			})
+			.register('todo_all', {
+				controllerName:	'todo_all',
+				parentRoute:	'todoApp',
+				loadScript:		'/todo/todo.js',
+				url:			'/'
+			})
+			.register('todo_active', {
+				controllerName:	'todo_active',
+				parentRoute:	'todoApp',
+				loadScript:		'/todo/todo.js',
+				url:			'/active'
+			})
+			.register('todo_completed', {
+				controllerName:	'todo_completed',
+				parentRoute:	'todoApp',
+				loadScript:		'/todo/todo.js',
+				url:			'/completed'
+			});
+	</script>
+</head>
+
+<body></body>
+</html>
