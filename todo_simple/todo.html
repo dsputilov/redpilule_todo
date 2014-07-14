@@ -1,0 +1,87 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+	<META HTTP-EQUIV="Expires" CONTENT="-1">
+
+	<script src='/core/bind.js'></script>
+	<script src='/core/class.js'></script>
+	<script src='/core/core.js'></script>
+	<script src='/core/redpilule.js'></script>
+	<script src='/core/component.js'></script>
+	<script src='/core/storage.js'></script>
+	<script src='/plugins/config.js'></script>
+</head>
+
+<style>
+	.bold {font-weight: bold;}
+	.red {color:red;}
+	.green {background:green;}
+	.orange {color: orange;}
+
+	.row {background: white; overflow: hidden;}
+	.item {padding:3px; border: 1px solid black; display: inline-block; height: 21px}
+	span[contenteditable=true].item {
+		border: 1px solid red;
+	}
+</style>
+<body>
+
+<template name="todoTemplate" hidden>
+    <input type="text" value="{{M.newTodo}}" onEnterPress="self.todoAdd()">
+    <div>
+		<for key="id" value="item" in="{{G.todos}}" filter="{{M.filter}}" animate="slideVertical">
+			<div class="row">
+				<input type="checkbox" value="{{M.item.status}}">
+				<span class="item {{M.item.status ? 'done':'undone'}}" editable>{{M.item.text}}</span>
+				<span onclick='self.todoRemove(M.id);'>X</span>
+			</div>
+		</for>
+    </div>
+	<div>{{G.todos::filter({status: false})::length}} items left</div><br>
+	<div>
+		<a class="{{M.filter.status === undefined ? 'bold':''}}" onclick="self.changeFilter({});">All</a>
+		<a class="{{M.filter.status === false ? 'bold':''}}" onclick="self.changeFilter({status: false});">Active</a>
+		<a class="{{M.filter.status === true ? 'bold':''}}" onclick="self.changeFilter({status: true});">Complited</a>
+	</div>
+	<span onclick='self.clearCompleted();'>Clear completed ({{G.todos::filter({status: true})::length}})</span><br>
+	<span onclick='self.clearAll();'>Clear all ({{G.todos::length}})</span>
+</template>
+
+<script>
+	$.G.modelMerge({ todos: [] });
+
+	var $myTodo = $("@todoTemplate")
+        .modelSet({
+			newTodo: '',
+            filter: {}
+        })
+        .logicSet({
+            todoAdd: function () {
+				$.G.model.todos.push({
+                    text:		$myTodo.model.newTodo,
+                    status:		false
+                });
+                $myTodo.model.newTodo = '';
+            },
+            todoRemove: function(id) {
+				$.G.modelDelete('todos.'+id);
+            },
+            changeFilter: function(filter) {
+                $myTodo.model.filter = filter;
+            },
+            clearCompleted: function() {
+				$.G.model.todos.forEach(function(item, id) {
+                    if (item.status) $.G.modelDelete('todos.'+id);
+                })
+            },
+            clearAll: function() {
+				$.G.model.todos = [];
+            }
+        })
+        .appendTo(document.body);
+</script>
+
+</body>
+</html>

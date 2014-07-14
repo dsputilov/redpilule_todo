@@ -1,0 +1,36 @@
+﻿<!doctype html>
+<html>
+<head>
+	<script src='http://redpilule.com/src/min/rp.js'></script>
+
+	<script>
+		$.Router
+			.register('todoApp', {
+				controllerName:	'todoApp',
+				loadScript:		'/todo/todo.js',
+				loadTemplate:	'/todo/todo.html',
+				loadCss:		'/todo/todo.css'
+			})
+			.register('todo_all', {
+				controllerName:	'todo_all',
+				parentRoute:	'todoApp',
+				loadScript:		'/todo/todo.js',
+				url:			'/'
+			})
+			.register('todo_active', {
+				controllerName:	'todo_active',
+				parentRoute:	'todoApp',
+				loadScript:		'/todo/todo.js',
+				url:			'/active'
+			})
+			.register('todo_completed', {
+				controllerName:	'todo_completed',
+				parentRoute:	'todoApp',
+				loadScript:		'/todo/todo.js',
+				url:			'/completed'
+			});
+	</script>
+</head>
+
+<body></body>
+</html>
